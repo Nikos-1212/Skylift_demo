@@ -18,7 +18,7 @@ class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
     if (state is GetUserInitial) {
       // fromJson(json)
       final currentINitState = state as GetUserInitial;
-      if (currentINitState.userModel.records != null) {
+      if (currentINitState.userModel.records != null && currentINitState.userModel.records!.isNotEmpty) {
         emit(GetUserLoaded(userModel: currentINitState.userModel));
       } else {
         emit(GetUserLoading());
@@ -33,7 +33,7 @@ class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
   }
 
   FutureOr<void> getuserDeleteevent(
-      GetuserDeleteevent event, Emitter<GetUserState> emit) {
+      GetuserDeleteevent event, Emitter<GetUserState> emit) async{
     if (state is GetUserLoaded) {
       final currentState = state as GetUserLoaded;
       final updatedRecords =
@@ -44,6 +44,16 @@ class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
           currentState.userModel.copyWith(records: updatedRecords);
       toJson(GetUserLoaded(userModel: updatedUserModel));
       emit(GetUserLoaded(userModel: updatedUserModel));
+      if(updatedUserModel.records!.isEmpty)
+      {
+        try {
+          emit(GetUserInitial(userModel: UserModel()));
+          await getUserEvent(event, emit);          
+        } catch (e) {
+          await getUserEvent(event, emit);          
+          print(e.toString());
+        }
+      }
     }
   }
 
