@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:demo/entity/user_model.dart';
+import 'package:demo/repository/api_services.dart';
 import 'package:demo/repository/user_repo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -23,7 +24,7 @@ class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
       } else {
         emit(GetUserLoading());
         try {
-          final res = await UserRpository().getUserList();
+          final res = await ApiService().getUserList();
           emit(GetUserLoaded(userModel: res));
         } catch (e) {
           emit(GetUserError(error: e.toString()));
@@ -40,8 +41,7 @@ class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
           List<Record>.from(currentState.userModel.records ?? []);
       updatedRecords.removeAt(event.index);
       // Create a new instance of UserModel with updated records
-      final updatedUserModel =
-          currentState.userModel.copyWith(records: updatedRecords);
+      final updatedUserModel =currentState.userModel.copyWith(records: updatedRecords);
       toJson(GetUserLoaded(userModel: updatedUserModel));
       emit(GetUserLoaded(userModel: updatedUserModel));
       if(updatedUserModel.records!.isEmpty)

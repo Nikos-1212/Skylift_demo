@@ -1,37 +1,36 @@
 import 'dart:convert';
-
 import 'package:demo/entity/user_model.dart';
 import 'package:demo/repository/api_host.dart';
+import 'package:demo/repository/api_services.dart';
 import 'package:http/http.dart' as http;
 
-class UserRpository {
-  Future<UserModel> getUserList() async {
-    try {
-      final response = await http.get(
-        Uri.parse(Apis.userend),
-      );
-      final data = json.decode(response.body);
+class UserRepository implements ApiService{
 
-      if (response.statusCode == 200 && data != []) {
-        final List list = data.toList();
-        List<Record> typeList = [];
-        list.forEach((element) {
-          typeList.add(Record.fromMap(element));
-        });
-        final res = List<Record>.from(typeList);
-        if (res.isNotEmpty) {
-          return UserModel(records: res);
-        } else {
-          throw Exception(
-              'Request was not successful.'); // Throw an exception for unsuccessful response
-        }
+  final http.Client client;
+  UserRepository(this.client);
+  @override
+ Future<UserModel> getUserList() async {
+  try {
+    final response = await client.get(
+      Uri.parse(Apis.userend),
+    );
+    final data = json.decode(response.body);
+
+    if (response.statusCode == 200 && data != null && data is List) {
+      final List<Record> recordsList =
+          data.map((element) => Record.fromMap(element)).toList();
+
+      if (recordsList.isNotEmpty) {
+        return UserModel(records: recordsList);
       } else {
-        throw Exception(
-            'Failed to fetch data'); // Throw an exception for non-200 status codes
+        throw Exception('Request was not successful.');
       }
-    } catch (exception) {
-      throw Exception(
-          'Failed to fetch data'); // Throw an exception for any exceptions
+    } else {
+      throw Exception('Failed to fetch data');
     }
+  } catch (exception) {
+    throw Exception('Failed to fetch data');
   }
+}
+
 }
