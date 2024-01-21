@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:demo/entity/user_model.dart';
 import 'package:demo/repository/api_services.dart';
+import 'package:demo/repository/user_repo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'get_user_event.dart';
@@ -36,7 +37,8 @@ class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
       GetuserDeleteevent event, Emitter<GetUserState> emit) async{
     if (state is GetUserLoaded) {
       final currentState = state as GetUserLoaded;
-      final updatedRecords =List<Record>.from(currentState.userModel.records ?? []);
+      final updatedRecords =
+          List<Record>.from(currentState.userModel.records ?? []);
       updatedRecords.removeAt(event.index);
       // Create a new instance of UserModel with updated records
       final updatedUserModel =currentState.userModel.copyWith(records: updatedRecords);
@@ -91,7 +93,8 @@ class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
             List<Record>.from(currentState.userModel.records ?? []);
         if (event.index >= 0 && event.index < updatedRecords.length) {
           // Assign the updated record back to the list
-          updatedRecords[event.index].copyWith(name: event.name, email: event.email);
+          updatedRecords[event.index] = updatedRecords[event.index]
+              .copyWith(name: event.name, email: event.email);
           // Create a new instance of UserModel with updated records
           final updatedUserModel =
               currentState.userModel.copyWith(records: updatedRecords);
