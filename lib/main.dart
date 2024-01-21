@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (context) => GetUserBloc()..add(const GetuserInitalevent()),
-        child: const UserPage(),
+        child: UserPage(),
       ),
     );
   }
