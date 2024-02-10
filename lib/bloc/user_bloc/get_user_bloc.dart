@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:demo/entity/user_model.dart';
 import 'package:demo/repository/api_services.dart';
-import 'package:demo/repository/user_repo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'get_user_event.dart';

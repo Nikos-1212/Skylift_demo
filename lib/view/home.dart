@@ -1,5 +1,6 @@
-import 'package:demo/bloc/get_user_bloc.dart';
-import 'package:demo/entity/user_model.dart';
+import 'package:demo/bloc/timer_bloc/cubit/timer_cubit.dart';
+import 'package:demo/bloc/user_bloc/get_user_bloc.dart';
+import 'package:demo/view/timer_page.dart';
 import 'package:demo/view/user_details.dart';
 import 'package:demo/widgets/textfield_dialog.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,11 @@ class UserPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User list'),
+        actions: [
+          IconButton(onPressed: (){
+             Navigator.push(context, MaterialPageRoute(builder: (context)=>const TimerPage()));
+          }, icon:const Icon(Icons.timer_sharp))
+        ],
       ),
       body: _userList(context),
     );
