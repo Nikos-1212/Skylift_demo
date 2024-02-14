@@ -13,7 +13,7 @@ String userModelToMap(UserModel data) => json.encode(data.toMap());
 class UserModel extends Equatable {
   final List<Record>? records;
 
-  UserModel({
+  const UserModel({
     this.records,
   });
 

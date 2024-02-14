@@ -40,11 +40,6 @@ Future<void> stopTimer() async {
   }
 }
 
-
-
-
-
-
   Future<void> resumeTimer() async {
     if (state is TimerInitial) {
       TimerInitial currentState = state as TimerInitial;

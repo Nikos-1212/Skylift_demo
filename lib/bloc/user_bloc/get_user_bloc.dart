@@ -7,7 +7,7 @@ part 'get_user_event.dart';
 part 'get_user_state.dart';
 
 class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
-  GetUserBloc() : super(GetUserInitial(userModel: UserModel())) {
+  GetUserBloc() : super(const GetUserInitial(userModel: UserModel())) {
     on<GetuserInitalevent>(getUserEvent);
     on<GetuserDeleteevent>(getuserDeleteevent);
     on<GetuserUpdateevent>(getuserUpdateevent);
@@ -46,7 +46,7 @@ class GetUserBloc extends HydratedBloc<GetUserEvent, GetUserState> {
       if(updatedUserModel.records!.isEmpty)
       {
         try {
-          emit(GetUserInitial(userModel: UserModel()));
+          emit(const GetUserInitial(userModel: UserModel()));
           await getUserEvent(event, emit);          
         } catch (e) {
           await getUserEvent(event, emit);          
